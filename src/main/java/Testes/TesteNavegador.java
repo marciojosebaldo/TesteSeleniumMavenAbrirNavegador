@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -21,15 +21,15 @@ public class TesteNavegador {
     }
 
     // Encerrar o teste
+    // Foi deixado comentado para evitar
     @AfterMethod
     public void finalizar() {
-        driver.quit();
+        //driver.quit();
     }
 
-    // Abrir o navegador e abrir o site
+
     @Test
-    public void AbrirNavegadorAbrirGoogle() {
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+    public void AbrirNavegadorAbrirSite() {
         driver.get("http://grupoassociativogasp.com.br/gestor_site/login");
 
         driver.findElement(By.id("cd_usuario")).sendKeys("Marcio");
@@ -37,5 +37,24 @@ public class TesteNavegador {
 
         WebElement botaoLogin = driver.findElement(By.xpath("/html/body/div[2]/form[1]/div[4]/label/button"));
         botaoLogin.click();
+    }
+
+    @Test
+    public void AbrirNavegadorAcessarAVA() {
+        driver.get("https://ava.fiep.digital/theme/badiumview/controller.php?_key=badiumview.factory.theme.fiep.app.login.index&_operation=apppage");
+
+        driver.findElement(By.className("form-control")).sendKeys("cpf");
+        driver.findElement(By.xpath("//*[@id=\"form-login\"]/div/div[2]/div/input")).sendKeys("senha");
+
+        WebElement botaoEstouDeAcordo = driver.findElement(By.xpath("//*[@id=\"form-login\"]/div/div[4]/label/input"));
+        botaoEstouDeAcordo.click();
+
+        WebElement botaoAcessar = driver.findElement(By.xpath("//*[@id=\"form-login\"]/div/div[5]/button"));
+        botaoAcessar.click();
+
+        WebElement msg = driver.findElement(By.xpath("//*[@id=\"form-login\"]/div/div[1]"));
+        boolean testeMsg = msg.isDisplayed();
+
+        Assert.assertTrue(testeMsg);
     }
 }
