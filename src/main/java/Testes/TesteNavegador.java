@@ -1,30 +1,25 @@
 package Testes;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import org.openqa.selenium.edge.EdgeDriver;
-
-import static java.util.concurrent.TimeUnit.SECONDS;
+import java.time.Duration;
 
 public class TesteNavegador {
     private WebDriver driver;
+    private WebDriverWait wait;
 
-    // Instanciar as variáveis de teste
-    // Precisa fazer o download do driver do navegador
-    // Escolha um ou outro
     @BeforeMethod
     public void iniciar() {
-        // Navegador Chrome
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\Aluno\\Desktop\\TesteSelenium\\Driver\\chromedriver.exe");
-        driver = new ChromeDriver();
-
-        // Navegador Edge
         System.setProperty("webdriver.edge.driver", "C:\\Users\\Aluno\\Desktop\\TesteSelenium\\Driver\\edge\\msedgedriver.exe");
         driver = new EdgeDriver();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     // Encerrar o teste
@@ -36,8 +31,7 @@ public class TesteNavegador {
     // Abrir o navegador e abrir o site
     @Test
     public void AbrirNavegadorAbrirGoogle() {
-        driver.manage().timeouts().implicitlyWait(10, SECONDS);
         driver.get("https://www.google.com.br/");
-        driver.manage().timeouts().implicitlyWait(10, SECONDS);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("q")));
     }
 }
